@@ -4,4 +4,9 @@ jobs:
     docker:
       - image: ercoppa/fuzzolic-ci-runner
     steps:
-      - checkout
+      - run:
+          name: Fetching repo
+          command: |
+            git clone https://github.com/season-lab/fuzzolic.git
+            cd fuzzolic && git submodule sync && git submodule update --init
+            ls
