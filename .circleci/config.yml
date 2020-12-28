@@ -27,3 +27,26 @@ jobs:
           key: fuzzolic-tracer-{{ checksum "fuzzolic/.git/modules/tracer/HEAD" }}
           paths:
             - fuzzolic/tracer
+       - run: 
+          name: Fetching fuzzy-sat
+          working_directory: fuzzolic/solver
+          command: |
+            [[ -d fuzzolic-z3 ]] || (cd fuzzy-sat && sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzy-sat/.gitmodules && git submodule sync && git submodule update --init)
+      - restore_cache:
+          key: fuzzolic-z3-{{ checksum "fuzzolic/.git/modules/solver/fuzzy-sat/modules/fuzzolic-z3/refs/heads/fuzzolic" }}
+      - run: 
+          name: Building Z3
+          working_directory: fuzzolic/solver/fuzzy-sat
+          command: |
+            [[ -d fuzzolic-z3/build/dist ]] || (cd fuzzolic-z3 && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/dist && make -j `nproc` && make install && cd ../..)
+            # caching Z3 build when localbuild
+            if [[ ${CIRCLE_SHELL_ENV} =~ "localbuild" ]]; then
+              if [[ -d fuzzolic-z3/build/dist ]]; then
+                mkdir -p /repo/solver/fuzzy-sat/fuzzolic-z3/build/
+                cp -a fuzzolic-z3/build/dist /repo/solver/fuzzy-sat/fuzzolic-z3/build/
+              fi
+            fi
+      - save_cache:
+          key: fuzzolic-z3-{{ checksum "fuzzolic/.git/modules/solver/fuzzy-sat/modules/fuzzolic-z3/refs/heads/fuzzolic" }}
+          paths:
+            - fuzzolic/solver/fuzzy-sat/fuzzolic-z3
