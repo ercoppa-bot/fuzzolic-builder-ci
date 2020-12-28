@@ -101,4 +101,22 @@ jobs:
       - save_cache:
           key: fuzzolic-aflpp-v0-9dbace2
           paths:
-            - utils/AFLplusplus
+            - fuzzolic/utils/AFLplusplus
+            
+      - run:
+          name: Running tests
+          working_directory: fuzzolic
+          command: |
+            if [[ ${CIRCLE_SHELL_ENV} =~ "localbuild" ]]; then
+              cat /tmp/.bash_env-localbuild-* >> /home/ubuntu/.bashrc
+            fi
+            cd tests && make && python3 -m pytest run.py --junitxml=test-results-smt/junit.xml ; python3 -m pytest --fuzzy run.py --junitxml=test-results-fuzzy/junit.xml
+            # git clone git@github.com:season-lab/fuzzy-sat.git
+      - store_test_results:
+          path: fuzzolic/tests/test-results-smt
+      - store_test_results:
+          path: fuzzolic/tests/test-results-fuzzy
+      - store_artifacts:
+          path: fuzzolic/tests/test-results-smt
+      - store_artifacts:
+          path: fuzzolic/tests/test-results-fuzzy  
