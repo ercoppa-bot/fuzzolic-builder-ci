@@ -27,7 +27,7 @@ jobs:
           key: fuzzolic-tracer-{{ checksum "fuzzolic/.git/modules/tracer/HEAD" }}
           paths:
             - fuzzolic/tracer
-       - run: 
+      - run: 
           name: Fetching fuzzy-sat
           working_directory: fuzzolic/solver
           command: |
