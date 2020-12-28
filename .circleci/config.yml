@@ -15,4 +15,15 @@ jobs:
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.git/config
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.gitmodules
             cd fuzzolic && git submodule sync && git submodule update --init
-            ls
+      - restore_cache:
+          key: fuzzolic-tracer-{{ checksum "fuzzolic/.git/modules/tracer/HEAD" }}
+      - run: 
+          name: Building tracer
+          working_directory: fuzzolic/tracer
+          command: |
+            [[ -f x86_64-linux-user/qemu-x86_64 ]] || ./configure --prefix=`pwd`/../build --target-list=x86_64-linux-user
+            [[ -f x86_64-linux-user/qemu-x86_64 ]] || make -j `nproc`
+      - save_cache:
+          key: fuzzolic-tracer-{{ checksum "fuzzolic/.git/modules/tracer/HEAD" }}
+          paths:
+            - fuzzolic/tracer
