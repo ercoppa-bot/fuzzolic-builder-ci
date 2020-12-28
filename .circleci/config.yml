@@ -31,7 +31,7 @@ jobs:
           name: Fetching fuzzy-sat
           working_directory: fuzzolic/solver
           command: |
-            [[ -d fuzzolic-z3 ]] || (cd fuzzy-sat && sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzy-sat/.gitmodules && git submodule sync && git submodule update --init)
+            [[ -d fuzzolic-z3 ]] || (cd fuzzy-sat && sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' .gitmodules && git submodule sync && git submodule update --init)
       - restore_cache:
           key: fuzzolic-z3-{{ checksum "fuzzolic/.git/modules/solver/fuzzy-sat/modules/fuzzolic-z3/refs/heads/fuzzolic" }}
       - run: 
