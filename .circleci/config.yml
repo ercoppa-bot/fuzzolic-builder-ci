@@ -71,6 +71,10 @@ jobs:
           name: Building solver frontend
           working_directory: fuzzolic/solver
           command: |
+            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/
+            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/
+            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib
+            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/include
             cmake . && make -j `nproc`
       - restore_cache:
           key: fuzzolic-aflpp-v0-9dbace2
