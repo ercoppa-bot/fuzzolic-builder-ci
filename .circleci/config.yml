@@ -73,7 +73,7 @@ jobs:
           command: |
             cmake . && make -j `nproc`
       - restore_cache:
-          key: fuzzolic-aflpp-v0-9dbace2
+          key: fuzzolic-aflpp-v1-9dbace2
       - run: 
           name: Building AFL++
           working_directory: fuzzolic/utils
@@ -97,9 +97,9 @@ jobs:
       - run:
           name: Setup Environment Variable AFL_PATH
           command: |
-            echo "export AFL_PATH=/home/ubuntu/fuzzolic/utils/AFLplusplus" >> $BASH_ENV
+            echo "export AFL_PATH=/home/ubuntu/project/fuzzolic/utils/AFLplusplus" >> $BASH_ENV
       - save_cache:
-          key: fuzzolic-aflpp-v0-9dbace2
+          key: fuzzolic-aflpp-v1-9dbace2
           paths:
             - fuzzolic/utils/AFLplusplus
             
