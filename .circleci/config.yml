@@ -11,8 +11,6 @@ jobs:
       - run:
           name: Fetching repo
           command: |
-            pwd
-            ls /asas
             git clone git@github.com:season-lab/fuzzolic.git
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.git/config
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.gitmodules
@@ -55,9 +53,9 @@ jobs:
       - run:
           name: Setup Environment Variables Z3
           command: |
-            echo "export C_INCLUDE_PATH=/home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/include:$C_INCLUDE_PATH" >> $BASH_ENV
-            echo "export LIBRARY_PATH=/home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib:$LIBRARY_PATH" >> $BASH_ENV
-            echo "export LD_LIBRARY_PATH=/home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib:$LD_LIBRARY_PATH" >> $BASH_ENV
+            echo "export C_INCLUDE_PATH=/home/ubuntu/project/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/include:$C_INCLUDE_PATH" >> $BASH_ENV
+            echo "export LIBRARY_PATH=/home/ubuntu/project/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib:$LIBRARY_PATH" >> $BASH_ENV
+            echo "export LD_LIBRARY_PATH=/home/ubuntu/project/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib:$LD_LIBRARY_PATH" >> $BASH_ENV
       - restore_cache:
           key: fuzzolic-fuzzy-build-{{ checksum "fuzzolic/.git/modules/solver/fuzzy-sat/refs/heads/master" }}
       - run: 
@@ -73,10 +71,6 @@ jobs:
           name: Building solver frontend
           working_directory: fuzzolic/solver
           command: |
-            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/
-            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/
-            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/lib
-            ls /home/ubuntu/fuzzolic/solver/fuzzy-sat/fuzzolic-z3/build/dist/include
             cmake . && make -j `nproc`
       - restore_cache:
           key: fuzzolic-aflpp-v0-9dbace2
