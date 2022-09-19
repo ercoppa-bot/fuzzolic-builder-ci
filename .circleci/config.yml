@@ -15,7 +15,7 @@ jobs:
             git clone git@github.com:season-lab/fuzzolic.git
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.git/config
             sed -i -e 's#https://github.com/season-lab#git@github.com:season-lab#g' fuzzolic/.gitmodules
-            sed -Ei 's#https://git.qemu.org/git#https://gitlab.com/qemu-project#' fuzzolic/.git/modules/tracer/config
+            # sed -Ei 's#https://git.qemu.org/git#https://gitlab.com/qemu-project#' fuzzolic/.git/modules/tracer/config
             cd fuzzolic && git submodule sync && git submodule update --init
       - restore_cache:
           key: fuzzolic-tracer-{{ checksum "fuzzolic/.git/modules/tracer/HEAD" }}
