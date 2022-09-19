@@ -21,6 +21,8 @@ jobs:
           name: Building tracer
           working_directory: fuzzolic/tracer
           command: |
+            sed -Ei 's#https://git.qemu.org/git#https://gitlab.com/qemu-project#' .git/config
+            sed -Ei 's#https://git.qemu.org/git#https://gitlab.com/qemu-project#' .gitmodules
             [[ -f x86_64-linux-user/qemu-x86_64 ]] || ./configure --prefix=`pwd`/../build --target-list=x86_64-linux-user
             [[ -f x86_64-linux-user/qemu-x86_64 ]] || make -j `nproc`
       - save_cache:
